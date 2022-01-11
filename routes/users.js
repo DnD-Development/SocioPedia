@@ -1,7 +1,5 @@
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
-const res = require("express/lib/response");
-const { rawListeners } = require("../models/User");
 const User = require("../models/User");
 
 router.get("/", (req, res) => {
