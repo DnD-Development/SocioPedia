@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const { json } = require("express/lib/response");
 const Post = require("../models/Post");
+const User = require("../models/User");
 
 // Create a Post
 router.post("/", async (req, res) => {
