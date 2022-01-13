@@ -41,6 +41,7 @@
 .searchInput {
   border: none;
   width: 70%;
+  display: flex;
 }
 
 .searchInput:focus {
@@ -85,7 +86,6 @@
   justify-content: center;
   font-size: 10px;
 }
-
 .topbarImg {
   width: 32px;
   height: 32px;
