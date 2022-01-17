@@ -1,12 +1,15 @@
 import React from "react";
 import { Search, Person, Chat, Notifications } from "@mui/icons-material";
 import "./topbar.scss";
+import { Link } from "react-router-dom";
 
 function Topbar() {
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
-        <span className="logo">SocioPedia</span>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <span className="logo">SocioPedia</span>
+        </Link>
       </div>
       <div className="topbarCenter">
         <div className="searchbar">
