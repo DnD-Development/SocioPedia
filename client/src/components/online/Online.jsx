@@ -1,4 +1,3 @@
-import { Users } from "../../dummydata";
 import "./online.scss";
 function Online({user}) {
     return (
