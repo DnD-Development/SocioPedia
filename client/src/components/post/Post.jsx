@@ -56,7 +56,6 @@ function Post({ post }) {
         <div className="postCenter">
           <span className="postText">{post?.desc}</span>
           <img src={post.img} alt="" className="postImg" />
-          {console.log(post.img)}
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
