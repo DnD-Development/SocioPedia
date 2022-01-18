@@ -50,7 +50,7 @@ router.delete("/:id", async (req, res) => {
 
 // GET USER
 router.get("/:id", async (req, res) => {
-  if (req.body.userId === req.params.id || req.body.isAdmin) {
+  // if (req.body.userId === req.params.id || req.body.isAdmin) {
     try {
       const user = await User.findById(req.params.id);
       const { password, updatedAt, ...other } = user._doc;
@@ -58,7 +58,7 @@ router.get("/:id", async (req, res) => {
     } catch (err) {
       res.status(500).json(err);
     }
-  }
+  // }
 });
 
 // FOLLOW USER
