@@ -1,3 +1,4 @@
+
 .login {
   width: 100vw;
   height: 100vh;
@@ -5,12 +6,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
+  
   .loginWrapper {
     width: 70%;
     height: 70%;
     display: flex;
-
+    
     .loginLeft,
     .loginRight {
       flex: 1;
@@ -18,7 +19,7 @@
       flex-direction: column;
       justify-content: center;
     }
-
+    
     .loginLeft {
       .loginLogo {
         font-size: 50px;
@@ -26,12 +27,12 @@
         color: #1775ee;
         margin-bottom: 10px;
       }
-
+      
       .loginDesc {
         font-size: 24px;
       }
     }
-
+    
     .loginRight {
       .loginBox {
         height: 300px;
@@ -41,7 +42,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-
+        
         .loginInput {
           height: 50px;
           border-radius: 10px;
@@ -51,6 +52,13 @@
         }
         .loginInput:focus {
           outline: none;
+        }
+        .loginButton:disabled {
+          cursor: not-allowed;
+        }
+        
+        .MuiCircularProgress-colorPrimary {
+            color: white !important;
         }
 
         .loginButton {
@@ -62,8 +70,9 @@
           font-size: 20px;
           font-weight: 500;
           cursor: pointer;
+          
         }
-
+        
         .loginForgot {
           text-align: center;
           color: #1775ee;
