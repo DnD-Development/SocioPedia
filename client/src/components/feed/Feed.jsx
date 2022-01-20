@@ -10,7 +10,6 @@ function Feed({ username }) {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    console.log(`sdfjkaslfdsjdkfhskadhi`);
     const fetchPosts = async () => {
       const res = username
         ? await axios.get("/posts/profile/" + username)
@@ -28,7 +27,7 @@ function Feed({ username }) {
   return (
     <div className="feed">
       <div className="feedWrapper">
-        {username === user.username && <Share />}
+        {(!username || username === user.username) && <Share />}
         {posts.map((p) => (
           <Post post={p} key={p._id} />
         ))}
