@@ -5,8 +5,8 @@ import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 
 function Share() {
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { user } = useContext(AuthContext);
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const desc = useRef();
   const [file, setFile] = useState(null);
 
@@ -24,17 +24,13 @@ function Share() {
       newPost.img = fileName;
       try {
         await axios.post("/upload", data);
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     }
 
     try {
       await axios.post("/posts", newPost);
       window.location.reload();
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   return (
