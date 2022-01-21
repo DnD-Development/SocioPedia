@@ -14,7 +14,6 @@ import Logout from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
 
 function ProfileMenu({ user }) {
-  console.log(user);
 
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [anchorEl, setAnchorEl] = React.useState(null);

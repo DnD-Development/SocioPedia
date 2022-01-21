@@ -1,7 +1,8 @@
-import { useContext } from "react";
-import "./sidebar.scss";
-import { Users } from "../../dummydata";
+import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import CloseFriend from "../closeFriend/CloseFriend";
+import "./sidebar.scss";
 import {
   RssFeed,
   Chat,
@@ -13,23 +14,36 @@ import {
   Event,
   School,
 } from "@mui/icons-material";
-import LogoutIcon from "@mui/icons-material/Logout";
 import { AuthContext } from "../../context/AuthContext";
-import Button from "@mui/material/Button";
+
 
 function Sidebar() {
+  
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const [friends, setFriends] = useState([]);
   const { user } = useContext(AuthContext);
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    window.location.href = "/";
-  };
+  useEffect(() => {
+    const getFriends = async () => {
+      try {
+        const friendList = await axios.get("/users/friends/" + user._id);
+        setFriends(friendList.data);
+      } catch (err) {}
+    };
+
+    getFriends();
+  }, [user]);
 
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
         <ul className="sidebarList">
-          <li className="sidebarListItem">
+          <li
+            className="sidebarListItem"
+            onClick={() => {
+              window.location.href = "/";
+            }}
+          >
             <RssFeed className="sidebarIcon" />
             <span className="sidebarListItemText">Feed</span>
           </li>
@@ -66,13 +80,17 @@ function Sidebar() {
             <span className="sidebarListItemText">Courses</span>
           </li>
         </ul>
-        <button onClick={handleLogout} className="sidebarButton">
-          Log out
-        </button>
+        <button className="sidebarButton">Show More</button>
         <hr className="sidebarHr" />
         <ul className="sidebarFriendList">
-          {Users.map((u) => (
-            <CloseFriend key={u.id} user={u} />
+          {friends.map((friend) => (
+            <Link
+              to={"/profile/" + friend.username}
+              style={{ textDecoration: "none" }}
+              key={user._id}
+            >
+              <CloseFriend key={friend.id} user={friend} />
+            </Link>
           ))}
         </ul>
       </div>

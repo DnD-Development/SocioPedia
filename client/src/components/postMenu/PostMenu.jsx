@@ -1,29 +1,24 @@
 import React from "react";
 import { useContext } from "react";
 import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
-import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
-import Logout from "@mui/icons-material/Logout";
-import { Link } from "react-router-dom";
 import { MoreVert } from "@mui/icons-material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import HideImageIcon from "@mui/icons-material/HideImage";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import ReportIcon from "@mui/icons-material/Report";
 import { AuthContext } from "../../context/AuthContext";
+import axios from "axios";
 
 function PostMenu({ user }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
-  const { user: currentUser } = useContext(AuthContext);
+  const { user: currentUser, dispatch } = useContext(AuthContext);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -34,6 +29,19 @@ function PostMenu({ user }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleUnfollowClick = async () => {
+    try {
+      await axios.put("/users/" + user._id + "/unfollow", {
+        userId: currentUser._id,
+      });
+      dispatch({ type: "UNFOLLOW", payload: user._id });
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
@@ -99,7 +107,7 @@ function PostMenu({ user }) {
         </MenuItem>
         <Divider />
         {user.username !== currentUser.username && (
-          <MenuItem>
+          <MenuItem onClick={handleUnfollowClick}>
             <ListItemIcon>
               <PersonRemoveIcon fontSize="small" />
             </ListItemIcon>

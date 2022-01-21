@@ -26,7 +26,10 @@ function Rightbar({ user }) {
     getFriends();
   }, [user]);
 
+  const [isWaiting, setIsWaiting] = useState(false);
+
   const handleClick = async () => {
+    setIsWaiting(true);
     try {
       if (followed) {
         await axios.put("/users/" + user._id + "/unfollow", {
@@ -41,6 +44,8 @@ function Rightbar({ user }) {
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsWaiting(false);
     }
     setFollowed(!followed);
   };
@@ -71,12 +76,15 @@ function Rightbar({ user }) {
     return (
       <>
         {user.username !== currentUser.username && (
-          <button className="rightbarFollowButton" onClick={handleClick}>
+          <button
+            className="rightbarFollowButton"
+            onClick={handleClick}
+            disabled={isWaiting}
+          >
             {followed ? "Unfollow" : "Follow"}
-            {followed ? <Remove /> : <Add />}
           </button>
         )}
-        <h4 className="rightbarTitle">User Information</h4>
+        <h4 className="rightbarTitle">User Information:</h4>
         <div className="rightbarInfo">
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey"> City: </span>
@@ -97,7 +105,7 @@ function Rightbar({ user }) {
             </span>
           </div>
         </div>
-        <h4 className="rightbarTitle">User Information</h4>
+        <h4 className="rightbarTitle">User Followings:</h4>
         <div className="rightbarFollowings">
           {friends.map((friend) => (
             <Link

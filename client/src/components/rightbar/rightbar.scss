@@ -27,6 +27,7 @@
     }
 
     .rightbarFollowButton{
+      width: 100px;
       margin-top: 30px;
       margin-bottom: 10px;
       border: none;
@@ -34,8 +35,6 @@
       color: #fff;
       border-radius: 5px;
       padding: 5px 10px;
-      display: flex;
-      align-items: center;
       font-size: 16px;
       font-weight: 500;
       cursor: pointer;
@@ -43,6 +42,10 @@
     .rightbarFollowButton:focus {
       outline: none;
     }
+    .rightbarFollowButton:disabled{
+      cursor: not-allowed;
+    }
+    
 
     .rightbarTitle {
       margin-bottom: 20px;
@@ -86,6 +89,9 @@
           border-radius: 5px;
         }
         .rightbarFollowingName {
+          text-align: center;
+          font-weight: 500;
+          color: black;
         }
       }
     }
