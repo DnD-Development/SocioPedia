@@ -62,9 +62,8 @@ function Profile() {
                 <Button
                   variant="outlined"
                   color="error"
-                  // className="profileLogoutButton"
                   onClick={handleLogout}
-                  style = {{marginTop: "15px"}}
+                  style={{ marginTop: "15px" }}
                 >
                   <LogoutIcon />
                   Logout

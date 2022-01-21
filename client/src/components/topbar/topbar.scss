@@ -40,10 +40,7 @@
         border: none;
         width: 70%;
         display: flex;
-
-        .searchInput:focus {
-          outline: none;
-        }
+        outline: none;
       }
     }
   }
@@ -85,7 +82,7 @@
         }
       }
     }
-    
+
     .topbarImg {
       width: 32px;
       height: 32px;

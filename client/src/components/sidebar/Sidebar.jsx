@@ -1,4 +1,4 @@
-import React from "react";
+import { useContext } from "react";
 import "./sidebar.scss";
 import { Users } from "../../dummydata";
 import CloseFriend from "../closeFriend/CloseFriend";
@@ -13,8 +13,18 @@ import {
   Event,
   School,
 } from "@mui/icons-material";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { AuthContext } from "../../context/AuthContext";
+import Button from "@mui/material/Button";
 
 function Sidebar() {
+  const { user } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    window.location.href = "/";
+  };
+
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
@@ -56,8 +66,9 @@ function Sidebar() {
             <span className="sidebarListItemText">Courses</span>
           </li>
         </ul>
-
-        <button className="sidebarButton">Show more</button>
+        <button onClick={handleLogout} className="sidebarButton">
+          Log out
+        </button>
         <hr className="sidebarHr" />
         <ul className="sidebarFriendList">
           {Users.map((u) => (
