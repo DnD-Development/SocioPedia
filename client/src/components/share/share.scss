@@ -24,6 +24,10 @@
         border: none;
         width: 80%;
         outline: none;
+        padding: 15px 20px;
+        border-radius: 4px;
+        background-color: rgb(245, 245, 245);
+        font-size: medium;
 
         .shareInput:focus {
           outline: none;

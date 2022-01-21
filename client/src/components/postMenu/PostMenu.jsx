@@ -1,4 +1,5 @@
 import React from "react";
+import { useContext } from "react";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
@@ -12,18 +13,20 @@ import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
+import { MoreVert } from "@mui/icons-material";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import HideImageIcon from "@mui/icons-material/HideImage";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import ReportIcon from "@mui/icons-material/Report";
+import { AuthContext } from "../../context/AuthContext";
 
-function ProfileMenu({ user }) {
-  console.log(user);
-
+function PostMenu({ user }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
+  const { user: currentUser } = useContext(AuthContext);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    window.location.href = "/";
-  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -34,7 +37,7 @@ function ProfileMenu({ user }) {
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-        <Tooltip title="Account settings">
+        <Tooltip title="Post settings">
           <IconButton
             onClick={handleClick}
             size="small"
@@ -43,12 +46,7 @@ function ProfileMenu({ user }) {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar
-              sx={{ width: 32, height: 32 }}
-              src={user.profilePicture ? PF + user.profilePicture : ``}
-            >
-              {user.username.slice(0, 1).toUpperCase()}
-            </Avatar>
+            <MoreVert />
           </IconButton>
         </Tooltip>
       </Box>
@@ -87,42 +85,37 @@ function ProfileMenu({ user }) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <Link
-          to={`/profile/${user.username}`}
-          style={{ textDecoration: "none", color: "inherit" }}
-        >
-          <MenuItem>
-            <Avatar
-              src={user.profilePicture ? PF + user.profilePicture : <Avatar />}
-            />
-            Profile ({user.username})
-          </MenuItem>
-        </Link>
         <MenuItem>
-          <Avatar /> My account
+          <ListItemIcon>
+            <BookmarkBorderIcon />
+          </ListItemIcon>
+          Save Post
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <HideImageIcon />
+          </ListItemIcon>
+          Hide Post
         </MenuItem>
         <Divider />
+        {user.username !== currentUser.username && (
+          <MenuItem>
+            <ListItemIcon>
+              <PersonRemoveIcon fontSize="small" />
+            </ListItemIcon>
+            Unfollow {user.username}
+          </MenuItem>
+        )}
+
         <MenuItem>
           <ListItemIcon>
-            <PersonAdd fontSize="small" />
+            <ReportIcon fontSize="small" />
           </ListItemIcon>
-          Add another account
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
-        <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
+          Report Post
         </MenuItem>
       </Menu>
     </React.Fragment>
   );
 }
 
-export default ProfileMenu;
+export default PostMenu;
