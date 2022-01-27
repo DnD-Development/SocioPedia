@@ -25,6 +25,8 @@ function Login() {
           <span className="loginDesc">
             Connect with your friends and the world around you on SocioPedia.
           </span>
+          <br />
+          <span className="loginDesc">We donot Respect Your Privacy</span>
         </div>
         <div className="loginRight">
           <form className="loginBox" onSubmit={handleClick}>

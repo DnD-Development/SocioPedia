@@ -16,11 +16,10 @@ import {
 } from "@mui/icons-material";
 import { AuthContext } from "../../context/AuthContext";
 
-
 function Sidebar() {
-  
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [friends, setFriends] = useState([]);
+  const [showMore, setShowMore] = useState(false);
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
@@ -59,28 +58,35 @@ function Sidebar() {
             <Group className="sidebarIcon" />
             <span className="sidebarListItemText">Groups</span>
           </li>
-          <li className="sidebarListItem">
-            <Bookmark className="sidebarIcon" />
-            <span className="sidebarListItemText">Bookmarks</span>
-          </li>
-          <li className="sidebarListItem">
-            <HelpOutline className="sidebarIcon" />
-            <span className="sidebarListItemText">Questions</span>
-          </li>
-          <li className="sidebarListItem">
-            <WorkOutline className="sidebarIcon" />
-            <span className="sidebarListItemText">Jobs</span>
-          </li>
-          <li className="sidebarListItem">
-            <Event className="sidebarIcon" />
-            <span className="sidebarListItemText">Events</span>
-          </li>
-          <li className="sidebarListItem">
-            <School className="sidebarIcon" />
-            <span className="sidebarListItemText">Courses</span>
-          </li>
+          <span style={{ display: `${showMore ? `block` : `none`}` }}>
+            <li className="sidebarListItem">
+              <Bookmark className="sidebarIcon" />
+              <span className="sidebarListItemText">Bookmarks</span>
+            </li>
+            <li className="sidebarListItem">
+              <HelpOutline className="sidebarIcon" />
+              <span className="sidebarListItemText">Questions</span>
+            </li>
+            <li className="sidebarListItem">
+              <WorkOutline className="sidebarIcon" />
+              <span className="sidebarListItemText">Jobs</span>
+            </li>
+            <li className="sidebarListItem">
+              <Event className="sidebarIcon" />
+              <span className="sidebarListItemText">Events</span>
+            </li>
+            <li className="sidebarListItem">
+              <School className="sidebarIcon" />
+              <span className="sidebarListItemText">Courses</span>
+            </li>
+          </span>
         </ul>
-        <button className="sidebarButton">Show More</button>
+        <button
+          className="sidebarButton"
+          onClick={() => setShowMore(!showMore)}
+        >
+          Show More
+        </button>
         <hr className="sidebarHr" />
         <ul className="sidebarFriendList">
           {friends.map((friend) => (

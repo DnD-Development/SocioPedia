@@ -15,7 +15,7 @@ import ReportIcon from "@mui/icons-material/Report";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 
-function PostMenu({ user }) {
+function PostMenu({ user, post }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   const { user: currentUser, dispatch } = useContext(AuthContext);
@@ -40,6 +40,15 @@ function PostMenu({ user }) {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const handleDeletePost = () => {
+    try {
+      axios.delete("/posts/" + post._id, {
+        data: { userId: currentUser._id },
+      });
+      window.location.reload();
+    } catch (err) {}
   };
 
   return (
@@ -99,12 +108,15 @@ function PostMenu({ user }) {
           </ListItemIcon>
           Save Post
         </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <HideImageIcon />
-          </ListItemIcon>
-          Hide Post
-        </MenuItem>
+        {post.userId === currentUser._id && (
+          <MenuItem onClick={handleDeletePost}>
+            <ListItemIcon>
+              <HideImageIcon />
+            </ListItemIcon>
+            Delete Post
+          </MenuItem>
+        )}
+
         <Divider />
         {user.username !== currentUser.username && (
           <MenuItem onClick={handleUnfollowClick}>
@@ -116,10 +128,20 @@ function PostMenu({ user }) {
         )}
 
         <MenuItem>
-          <ListItemIcon>
-            <ReportIcon fontSize="small" />
-          </ListItemIcon>
-          Report Post
+          <a
+            style={{
+              textDecoration: "none",
+              color: "black",
+              display: "flex",
+              alignItems: "center",
+            }}
+            href={`mailto:info.sociapedia@gmail.com?subject=Report The Post &body=Hi,I found this post violet the rule. Post ID : ${post._id} and User Id : ${user._id}`}
+          >
+            <ListItemIcon>
+              <ReportIcon fontSize="small" />
+            </ListItemIcon>
+            Report Post
+          </a>
         </MenuItem>
       </Menu>
     </React.Fragment>

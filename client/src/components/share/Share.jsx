@@ -9,16 +9,27 @@ import {
 } from "@mui/icons-material";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
+import Picker from "emoji-picker-react";
 
 function Share() {
   const { user } = useContext(AuthContext);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const desc = useRef();
   const [file, setFile] = useState(null);
+  const [emojiDropDown, setEmojiDropDown] = useState(false);
+
+  const [chosenEmoji, setChosenEmoji] = useState(null);
+
+  const onEmojiClick = (event, emojiObject) => {
+    desc.current.value += emojiObject.emoji;
+    setChosenEmoji(emojiObject);
+    console.log(emojiObject);
+  };
 
   const submitHandler = async (e) => {
-    if (!file && !desc.current.value) return;
     e.preventDefault();
+    if (!file && !desc.current.value) return;
+
     const newPost = {
       userId: user._id,
       desc: desc.current.value,
@@ -91,9 +102,20 @@ function Share() {
             </div>
             <div className="shareOption">
               <EmojiEmotions htmlColor="goldenrod" className="shareIcon" />
-              <span className="shareOptionText">Feelings</span>
+              <span
+                className="shareOptionText"
+                onClick={() => setEmojiDropDown(!emojiDropDown)}
+              >
+                Feelings
+              </span>
+              {emojiDropDown && (
+                <div className="emojiContainer">
+                  <Picker onEmojiClick={onEmojiClick} />
+                </div>
+              )}
             </div>
           </div>
+
           <button className="shareButton" type="submit">
             Share
           </button>
