@@ -14,7 +14,6 @@ import Logout from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
 
 function ProfileMenu({ user }) {
-
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -44,7 +43,7 @@ function ProfileMenu({ user }) {
           >
             <Avatar
               sx={{ width: 32, height: 32 }}
-              src={user.profilePicture ? PF + user.profilePicture : ``}
+              src={`${user.profilePicture ? PF + user.profilePicture : ""}`}
             >
               {user.username.slice(0, 1).toUpperCase()}
             </Avatar>

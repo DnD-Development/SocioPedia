@@ -10,6 +10,8 @@ import {
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import Picker from "emoji-picker-react";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "../../firebase";
 
 function Share() {
   const { user } = useContext(AuthContext);
@@ -30,25 +32,44 @@ function Share() {
     e.preventDefault();
     if (!file && !desc.current.value) return;
 
-    const newPost = {
+    var newPost = {
       userId: user._id,
       desc: desc.current.value,
     };
     if (file) {
-      const data = new FormData();
-      const fileName = Date.now() + file.name;
-      data.append("name", fileName);
-      data.append("file", file);
-      newPost.img = fileName;
       try {
-        await axios.post("/upload", data);
+        const fileName = Date.now() + file.name;
+        const storageRef = ref(storage, `/images/${fileName}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            console.log("Uploaded a file!");
+          },
+          (err) => {
+            console.log(err);
+          },
+          async () => {
+            await getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+              console.log(url);
+              newPost.img = url;
+              console.log(newPost);
+            });
+            try {
+              await axios.post("/posts", newPost);
+              window.location.reload();
+            } catch (err) {}
+          }
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      try {
+        await axios.post("/posts", newPost);
+        window.location.reload();
       } catch (err) {}
     }
-
-    try {
-      await axios.post("/posts", newPost);
-      window.location.reload();
-    } catch (err) {}
   };
 
   return (
@@ -100,14 +121,12 @@ function Share() {
               <Room htmlColor="green" className="shareIcon" />
               <span className="shareOptionText">Location</span>
             </div>
-            <div className="shareOption">
+            <div
+              className="shareOption"
+              onClick={() => setEmojiDropDown(!emojiDropDown)}
+            >
               <EmojiEmotions htmlColor="goldenrod" className="shareIcon" />
-              <span
-                className="shareOptionText"
-                onClick={() => setEmojiDropDown(!emojiDropDown)}
-              >
-                Feelings
-              </span>
+              <span className="shareOptionText">Feelings</span>
               {emojiDropDown && (
                 <div className="emojiContainer">
                   <Picker onEmojiClick={onEmojiClick} />
