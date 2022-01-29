@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import axiosInstance from "../../config";
 import Feed from "../../components/feed/Feed";
 import Rightbar from "../../components/rightbar/Rightbar";
 import Sidebar from "../../components/sidebar/Sidebar";
@@ -8,7 +8,8 @@ import "./profile.scss";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import LogoutIcon from "@mui/icons-material/Logout";
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
+import noAvatar from "../../images/noAvatar.png";
 
 function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
@@ -23,7 +24,7 @@ function Profile() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/users?username=${username}`);
+      const res = await axiosInstance.get(`/users?username=${username}`);
       setUser(res.data);
     };
     fetchUser();
@@ -43,14 +44,14 @@ function Profile() {
                     ? PF + profileUser.coverPicture
                     : PF + `person/noCover.png`
                 }
-                alt={PF + `person/noCover.png`}
+                alt={`Cover Photo`}
                 className="profileCoverImg"
               />
               <img
                 src={
                   profileUser.profliePicture
                     ? PF + profileUser.profliePicture
-                    : PF + `person/noAvatar.png`
+                    : noAvatar
                 }
                 alt=""
                 className="profileUserImg"

@@ -1,11 +1,14 @@
 import "./post.scss";
 import { MoreVert } from "@mui/icons-material";
 import { useContext, useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../config";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import PostMenu from "../postMenu/PostMenu";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import noAvatar from "../../images/noAvatar.png";
 
 export default function Post({ post }) {
   const [like, setLike] = useState(post.likes.length);
@@ -20,7 +23,7 @@ export default function Post({ post }) {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/users?userId=${post.userId}`);
+      const res = await axiosInstance.get(`/users?userId=${post.userId}`);
       setUser(res.data);
     };
     fetchUser();
@@ -28,7 +31,9 @@ export default function Post({ post }) {
 
   const likeHandler = () => {
     try {
-      axios.put("/posts/" + post._id + "/like", { userId: currentUser._id });
+      axiosInstance.put("/posts/" + post._id + "/like", {
+        userId: currentUser._id,
+      });
     } catch (err) {}
     setLike(isLiked ? like - 1 : like + 1);
     setIsLiked(!isLiked);
@@ -42,11 +47,7 @@ export default function Post({ post }) {
             <Link to={`/profile/${user.username}`}>
               <img
                 className="postProfileImg"
-                src={
-                  user.profilePicture
-                    ? PF + user.profilePicture
-                    : PF + "person/noAvatar.png"
-                }
+                src={user.profilePicture ? PF + user.profilePicture : noAvatar}
                 alt=""
               />
             </Link>
@@ -63,18 +64,12 @@ export default function Post({ post }) {
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
-            <img
-              className="likeIcon"
-              src={`${PF}like.png`}
-              onClick={likeHandler}
-              alt=""
-            />
-            <img
-              className="likeIcon"
-              src={`${PF}heart.png`}
-              onClick={likeHandler}
-              alt=""
-            />
+            {isLiked ? (
+              <FavoriteIcon className="likeIcon" onClick={likeHandler} />
+            ) : (
+              <FavoriteBorderIcon className="likeIcon" onClick={likeHandler} />
+            )}
+
             <span className="postLikeCounter">{like} people like it</span>
           </div>
           <div className="postBottomRight">

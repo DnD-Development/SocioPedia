@@ -13,7 +13,7 @@ import HideImageIcon from "@mui/icons-material/HideImage";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import ReportIcon from "@mui/icons-material/Report";
 import { AuthContext } from "../../context/AuthContext";
-import axios from "axios";
+import axiosInstance from "../../config";
 
 function PostMenu({ user, post }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
@@ -32,7 +32,7 @@ function PostMenu({ user, post }) {
 
   const handleUnfollowClick = async () => {
     try {
-      await axios.put("/users/" + user._id + "/unfollow", {
+      await axiosInstance.put("/users/" + user._id + "/unfollow", {
         userId: currentUser._id,
       });
       dispatch({ type: "UNFOLLOW", payload: user._id });
@@ -44,7 +44,7 @@ function PostMenu({ user, post }) {
 
   const handleDeletePost = () => {
     try {
-      axios.delete("/posts/" + post._id, {
+      axiosInstance.delete("/posts/" + post._id, {
         data: { userId: currentUser._id },
       });
       window.location.reload();

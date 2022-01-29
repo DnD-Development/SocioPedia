@@ -4,7 +4,8 @@
   "description": "We respect privacy (Just Kidding)",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node index.js",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "author": "DnD",
   "license": "ISC",

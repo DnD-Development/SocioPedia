@@ -8,10 +8,11 @@ import {
   Cancel,
 } from "@mui/icons-material";
 import { AuthContext } from "../../context/AuthContext";
-import axios from "axios";
+import axiosInstance from "../../config";
 import Picker from "emoji-picker-react";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase";
+import noAvatar from "../../images/noAvatar.png";
 
 function Share() {
   const { user } = useContext(AuthContext);
@@ -56,7 +57,7 @@ function Share() {
               console.log(newPost);
             });
             try {
-              await axios.post("/posts", newPost);
+              await axiosInstance.post("/posts", newPost);
               window.location.reload();
             } catch (err) {}
           }
@@ -66,7 +67,7 @@ function Share() {
       }
     } else {
       try {
-        await axios.post("/posts", newPost);
+        await axiosInstance.post("/posts", newPost);
         window.location.reload();
       } catch (err) {}
     }
@@ -77,11 +78,7 @@ function Share() {
       <div className="shareWrapper">
         <div className="shareTop">
           <img
-            src={
-              user.profilePicture
-                ? PF + user.profilePicture
-                : PF + `person/noAvatar.png`
-            }
+            src={user.profilePicture ? PF + user.profilePicture : noAvatar}
             alt=""
             className="shareProfileImg"
           />

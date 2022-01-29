@@ -2,7 +2,7 @@ import Online from "../online/Online";
 import { Users } from "../../dummydata";
 import "./rightbar.scss";
 import { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import axiosInstance from "../../config";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { Add, Remove } from "@mui/icons-material";
@@ -18,7 +18,9 @@ function Rightbar({ user }) {
   useEffect(() => {
     const getFriends = async () => {
       try {
-        const friendList = await axios.get("/users/friends/" + user._id);
+        const friendList = await axiosInstance.get(
+          "/users/friends/" + user._id
+        );
         setFriends(friendList.data);
       } catch (err) {}
     };
@@ -32,12 +34,12 @@ function Rightbar({ user }) {
     setIsWaiting(true);
     try {
       if (followed) {
-        await axios.put("/users/" + user._id + "/unfollow", {
+        await axiosInstance.put("/users/" + user._id + "/unfollow", {
           userId: currentUser._id,
         });
         dispatch({ type: "UNFOLLOW", payload: user._id });
       } else {
-        await axios.put("/users/" + user._id + "/follow", {
+        await axiosInstance.put("/users/" + user._id + "/follow", {
           userId: currentUser._id,
         });
         dispatch({ type: "FOLLOW", payload: user._id });

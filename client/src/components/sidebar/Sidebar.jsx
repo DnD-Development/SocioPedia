@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../config";
 import CloseFriend from "../closeFriend/CloseFriend";
 import "./sidebar.scss";
 import {
@@ -25,7 +25,9 @@ function Sidebar() {
   useEffect(() => {
     const getFriends = async () => {
       try {
-        const friendList = await axios.get("/users/friends/" + user._id);
+        const friendList = await axiosInstance.get(
+          "/users/friends/" + user._id
+        );
         setFriends(friendList.data);
       } catch (err) {}
     };

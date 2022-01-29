@@ -10,6 +10,8 @@ const path = require("path");
 
 const app = express();
 
+const PORT = process.env.PORT || 5000;
+
 dotenv.config();
 
 mongoose.connect(
@@ -21,6 +23,7 @@ mongoose.connect(
 );
 
 app.use("/images", express.static(path.join(__dirname, "public/images")));
+app.use(express.static(path.join(__dirname, "/client/build")));
 
 // Middlewares
 app.use(express.json());
@@ -31,6 +34,10 @@ app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/posts", postRoute);
 
-app.listen(8800, () => {
-  console.log("Backend Server started on port 8800");
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "/client/build", "index.html"));
+});
+
+app.listen(PORT, () => {
+  console.log(`Backend Server started on port ${PORT}`);
 });
